@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Rose Jim's Pickle Yard — Tap In</title>
+  <meta name="description" content="You just tapped into Rose Jim's Pickle Yard. Live scoreboard, rankings, the club site and a rally game — all one tap away." />
+  <meta name="theme-color" content="#070d1f" />
+  <meta property="og:title" content="Rose Jim's Pickle Yard — Tap In" />
+  <meta property="og:description" content="Live scoreboard, monthly rankings and a rally game. Welcome to the Yard." />
+  <meta property="og:image" content="https://jimsontiaga1819-afk.github.io/rosejims-pickle-yard-nfc/assets/og.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="apple-touch-icon" href="assets/icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }
+  </script>
+</head>
+<body class="is-loading">
+  <!-- ============ INTRO: NFC TAP ============ -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro__rings">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <svg class="intro__nfc" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+      <path d="M22 20c4 3.5 6 7.5 6 12s-2 8.5-6 12" />
+      <path d="M31 14c6 5 9 11 9 18s-3 13-9 18" />
+      <path d="M40 8c8 6.5 12 14.5 12 24s-4 17.5-12 24" />
+      <circle cx="14" cy="32" r="3" fill="currentColor" stroke="none" />
+    </svg>
+    <p class="intro__label mono"><span id="introText">Tap detected</span><i class="blink">_</i></p>
+    <div class="intro__bar"><i id="introBar"></i></div>
+  </div>
+
+  <!-- ambient layers -->
+  <canvas id="bgCanvas" class="bg-canvas" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"><span></span></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__brand" data-magnetic>
+      <span class="dot dot--live"></span>
+      <span class="mono">RJ·PY</span>
+    </a>
+    <nav class="nav__links">
+      <a href="#actions">Tap&nbsp;Menu</a>
+      <a href="#rally">Rally</a>
+      <a href="#yard">The&nbsp;Yard</a>
+      <a href="#lingo">Lingo</a>
+    </nav>
+    <a class="nav__cta" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-magnetic>
+      <span class="dot dot--live"></span> Live board
+    </a>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__ball" id="ballStage" aria-hidden="true"></div>
+
+      <div class="hero__inner">
+        <p class="eyebrow mono" data-reveal>
+          <span class="dot dot--live"></span>
+          <span id="greeting">Welcome to the Yard</span>
+          <span class="sep">/</span>
+          <span id="clock">--:--</span>
+        </p>
+
+        <figure class="hero__logo" data-tilt>
+          <img src="assets/logo.webp" alt="Rose Jim's Pickle Yard logo" width="1200" height="800" fetchpriority="high" />
+          <span class="hero__shine" aria-hidden="true"></span>
+        </figure>
+
+        <h1 class="hero__title">
+          <span class="split" data-split>You're on</span>
+          <span class="split split--accent" data-split>the court.</span>
+        </h1>
+
+        <p class="hero__sub" data-reveal>
+          One tap got you here. Check live scores, see who's climbing the monthly rankings,
+          and warm up your hands with a quick rally.
+        </p>
+
+        <div class="hero__ctas" data-reveal>
+          <a class="btn btn--primary" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti>
+            <span class="btn__label">Open live scoreboard</span>
+            <span class="btn__icon">↗</span>
+          </a>
+          <a class="btn btn--ghost" href="#rally" data-magnetic>
+            <span class="btn__label">Play a rally</span>
+            <span class="btn__icon">●</span>
+          </a>
+        </div>
+
+        <div class="visit mono" data-reveal>
+          <span>Tap&nbsp;#<b id="visitCount">1</b></span>
+          <span class="sep">·</span>
+          <span id="visitNote">first time on the Yard</span>
+        </div>
+      </div>
+
+      <a href="#actions" class="scroll-hint mono" aria-label="Scroll down">
+        <span>scroll</span><i></i>
+      </a>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track" id="marquee">
+        <span>DINK</span><b>●</b><span class="o">DRIVE</span><b>●</b><span>DROP</span><b>●</b><span class="o">REPEAT</span><b>●</b>
+        <span>DINK</span><b>●</b><span class="o">DRIVE</span><b>●</b><span>DROP</span><b>●</b><span class="o">REPEAT</span><b>●</b>
+      </div>
+    </div>
+
+    <!-- ============ ACTION BENTO ============ -->
+    <section class="section actions" id="actions">
+      <header class="section__head">
+        <p class="kicker mono">01 — Tap menu</p>
+        <h2 class="section__title" data-split-words>Everything at the Yard, one tap deep.</h2>
+      </header>
+
+      <div class="bento">
+        <a class="card card--xl card--blue" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-card data-confetti>
+          <div class="card__glow"></div>
+          <div class="card__top">
+            <span class="chip mono"><span class="dot dot--live"></span> live</span>
+            <span class="card__arrow">↗</span>
+          </div>
+          <div class="score" aria-hidden="true">
+            <div class="score__team"><span class="mono">TEAM ROSE</span><b data-flip="11">0</b></div>
+            <div class="score__vs mono">vs</div>
+            <div class="score__team"><span class="mono">TEAM JIM</span><b data-flip="9">0</b></div>
+          </div>
+          <div class="card__body">
+            <h3>Live Scoreboard</h3>
+            <p>Club scores, sessions and the fair player randomizer.</p>
+          </div>
+        </a>
+
+        <a class="card card--green" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-card>
+          <div class="card__glow"></div>
+          <div class="card__top"><span class="chip mono">monthly</span><span class="card__arrow">↗</span></div>
+          <div class="podium" aria-hidden="true">
+            <i style="--h:62%"><em>2</em></i><i style="--h:92%"><em>1</em></i><i style="--h:44%"><em>3</em></i>
+          </div>
+          <div class="card__body"><h3>Rankings</h3><p>See who's climbing this month.</p></div>
+        </a>
+
+        <a class="card card--red" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-card>
+          <div class="card__glow"></div>
+          <div class="card__top"><span class="chip mono">home</span><span class="card__arrow">↗</span></div>
+          <div class="rose" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><path d="M50 18c14 0 24 10 24 22 0 15-12 24-24 24S26 55 26 40c0-12 10-22 24-22Z" /><path d="M50 30c7 0 12 5 12 11s-5 11-12 11-11-4-11-10 4-12 11-12Z" /><path d="M50 64v26M50 78c-8-2-14-8-16-14M50 74c8-2 14-7 16-13"/></svg>
+          </div>
+          <div class="card__body"><h3>The Pickle Yard</h3><p>Our home page &amp; everything Yard.</p></div>
+        </a>
+
+        <button class="card card--ink" type="button" id="saveContact" data-card>
+          <div class="card__glow"></div>
+          <div class="card__top"><span class="chip mono">.vcf</span><span class="card__arrow">↓</span></div>
+          <div class="card__big mono" aria-hidden="true">+ CONTACT</div>
+          <div class="card__body"><h3>Save the Yard</h3><p>Add us to your contacts in one tap.</p></div>
+        </button>
+
+        <button class="card card--ink" type="button" id="shareBtn" data-card>
+          <div class="card__glow"></div>
+          <div class="card__top"><span class="chip mono">invite</span><span class="card__arrow">⤴</span></div>
+          <div class="share-orbit" aria-hidden="true"><i></i><i></i><i></i><b>RJ</b></div>
+          <div class="card__body"><h3>Bring a partner</h3><p>Doubles needs four. Send the link.</p></div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ RALLY GAME ============ -->
+    <section class="section rally" id="rally">
+      <header class="section__head">
+        <p class="kicker mono">02 — Warm-up</p>
+        <h2 class="section__title" data-split-words>Keep it out of the kitchen.</h2>
+        <p class="section__lead">Drag or move to steer the paddle. Every hit speeds things up. Your best rally stays on this phone.</p>
+      </header>
+
+      <div class="game" id="game">
+        <canvas id="gameCanvas"></canvas>
+        <div class="game__hud mono">
+          <span>RALLY <b id="hudScore">0</b></span>
+          <span>BEST <b id="hudBest">0</b></span>
+        </div>
+        <div class="game__overlay" id="gameOverlay">
+          <p class="mono game__tag" id="gameTag">ready?</p>
+          <h3 id="gameTitle">Serve it up</h3>
+          <button class="btn btn--primary" id="gameStart" data-magnetic><span class="btn__label">Serve</span><span class="btn__icon">●</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE YARD (pinned steps) ============ -->
+    <section class="section yard" id="yard">
+      <div class="yard__pin">
+        <div class="yard__left">
+          <p class="kicker mono">03 — How the Yard runs</p>
+          <h2 class="section__title">Show up.<br/>Get mixed.<br/><span class="grad">Climb.</span></h2>
+          <div class="yard__progress"><i id="yardProgress"></i></div>
+        </div>
+        <ol class="yard__steps">
+          <li class="step" data-step>
+            <span class="step__n mono">01</span>
+            <div><h3>Check in for the session</h3><p>Every open play is a session on the scoreboard, so your games count from the first serve.</p></div>
+          </li>
+          <li class="step" data-step>
+            <span class="step__n mono">02</span>
+            <div><h3>Get fairly randomized</h3><p>The player randomizer mixes partners and courts so nobody sits out too long and every match is fair.</p></div>
+          </li>
+          <li class="step" data-step>
+            <span class="step__n mono">03</span>
+            <div><h3>Score it live</h3><p>Results land on the club scoreboard as you play. No clipboards, no arguments.</p></div>
+          </li>
+          <li class="step" data-step>
+            <span class="step__n mono">04</span>
+            <div><h3>Climb the monthly rankings</h3><p>Wins stack into the monthly leaderboard. New month, new race to the top.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ LINGO FLIP CARDS ============ -->
+    <section class="section lingo" id="lingo">
+      <header class="section__head">
+        <p class="kicker mono">04 — Court lingo</p>
+        <h2 class="section__title" data-split-words>Talk like a regular.</h2>
+        <p class="section__lead">Tap a card to flip it.</p>
+      </header>
+      <div class="flips">
+        <button class="flip" type="button" data-flipcard><span class="flip__in">
+          <span class="flip__face flip__front"><b>Kitchen</b><em class="mono">tap ↻</em></span>
+          <span class="flip__face flip__back">The 7-foot non-volley zone by the net. No volleys with your feet in it.</span>
+        </span></button>
+        <button class="flip" type="button" data-flipcard><span class="flip__in">
+          <span class="flip__face flip__front"><b>Dink</b><em class="mono">tap ↻</em></span>
+          <span class="flip__face flip__back">A soft shot that drops into the opponent's kitchen. Patience wins points.</span>
+        </span></button>
+        <button class="flip" type="button" data-flipcard><span class="flip__in">
+          <span class="flip__face flip__front"><b>Third shot drop</b><em class="mono">tap ↻</em></span>
+          <span class="flip__face flip__back">A soft arcing third shot that lets the serving team move up to the net.</span>
+        </span></button>
+        <button class="flip" type="button" data-flipcard><span class="flip__in">
+          <span class="flip__face flip__front"><b>Erne</b><em class="mono">tap ↻</em></span>
+          <span class="flip__face flip__back">Leaping around the kitchen corner to volley near the post. Pure highlight reel.</span>
+        </span></button>
+        <button class="flip" type="button" data-flipcard><span class="flip__in">
+          <span class="flip__face flip__front"><b>ATP</b><em class="mono">tap ↻</em></span>
+          <span class="flip__face flip__back">Around The Post: a shot hit around the net post instead of over it. Legal and loud.</span>
+        </span></button>
+        <button class="flip" type="button" data-flipcard><span class="flip__in">
+          <span class="flip__face flip__front"><b>Pickled</b><em class="mono">tap ↻</em></span>
+          <span class="flip__face flip__back">Losing a game 11–0. Buy the next round of water.</span>
+        </span></button>
+      </div>
+    </section>
+
+    <!-- ============ OUTRO ============ -->
+    <section class="outro" id="outro">
+      <div class="outro__ring" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p class="kicker mono">see you on court</p>
+      <h2 class="outro__title"><span>Rose</span><span>Jim's</span><span>Pickle&nbsp;Yard</span></h2>
+      <a class="btn btn--primary btn--lg" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti>
+        <span class="btn__label">Let's play</span><span class="btn__icon">↗</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer mono">
+    <span>© <span id="year"></span> Rose Jim's Pickle Yard</span>
+    <span>Tap · Play · Repeat</span>
+  </footer>
+
+  <div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="app.js"></script>
+  <script type="module" src="ball3d.js"></script>
+</body>
+</html>
