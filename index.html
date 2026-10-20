@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Rose Jim's Pickle Yard — Tap In</title>
-  <meta name="description" content="You just tapped into Rose Jim's Pickle Yard. Live scoreboard, rankings, the club site and a rally game — all one tap away." />
+  <meta name="description" content="Book the court at Rose Jim's Pickle Yard in Candoni, Negros Occidental. From ₱140 an hour, pay by GCash or cash." />
   <meta name="theme-color" content="#070d1f" />
   <meta property="og:title" content="Rose Jim's Pickle Yard — Tap In" />
-  <meta property="og:description" content="Live scoreboard, monthly rankings and a rally game. Welcome to the Yard." />
+  <meta property="og:description" content="One court in Candoni. Pick your hour, pay by GCash or cash, and play. From ₱140/hr." />
   <meta property="og:image" content="https://jimsontiaga1819-afk.github.io/rosejims-pickle-yard-nfc/assets/og.jpg" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -50,13 +50,13 @@
       <span class="mono">RJ·PY</span>
     </a>
     <nav class="nav__links">
+      <a href="#book">Book</a>
       <a href="#actions">Tap&nbsp;Menu</a>
+      <a href="#yard">How&nbsp;it&nbsp;works</a>
       <a href="#rally">Rally</a>
-      <a href="#yard">The&nbsp;Yard</a>
-      <a href="#lingo">Lingo</a>
     </nav>
-    <a class="nav__cta" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-magnetic>
-      <span class="dot dot--live"></span> Live board
+    <a class="nav__cta" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-magnetic data-book>
+      <span class="dot dot--live"></span> Book a court
     </a>
   </header>
 
@@ -79,23 +79,23 @@
         </figure>
 
         <h1 class="hero__title">
-          <span class="split" data-split>You're on</span>
-          <span class="split split--accent" data-split>the court.</span>
+          <span class="split" data-split>Your court</span>
+          <span class="split split--accent" data-split>is waiting.</span>
         </h1>
 
         <p class="hero__sub" data-reveal>
-          One tap got you here. Check live scores, see who's climbing the monthly rankings,
-          and warm up your hands with a quick rally.
+          Rose Jim's court in Candoni is open 8 AM to 10 PM. Pick your hour, pay by GCash or cash,
+          and get on court. Weekdays from <b class="hl">₱140/hr</b>.
         </p>
 
         <div class="hero__ctas" data-reveal>
-          <a class="btn btn--primary" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti>
-            <span class="btn__label">Open live scoreboard</span>
+          <a class="btn btn--primary btn--book" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti data-book>
+            <span class="btn__label">Book a court</span>
             <span class="btn__icon">↗</span>
           </a>
-          <a class="btn btn--ghost" href="#rally" data-magnetic>
-            <span class="btn__label">Play a rally</span>
-            <span class="btn__icon">●</span>
+          <a class="btn btn--ghost" href="#book" data-magnetic>
+            <span class="btn__label">See times &amp; rates</span>
+            <span class="btn__icon">↓</span>
           </a>
         </div>
 
@@ -106,7 +106,7 @@
         </div>
       </div>
 
-      <a href="#actions" class="scroll-hint mono" aria-label="Scroll down">
+      <a href="#book" class="scroll-hint mono" aria-label="Scroll down">
         <span>scroll</span><i></i>
       </a>
     </section>
@@ -119,69 +119,149 @@
       </div>
     </div>
 
+    <!-- ============ BOOK PLANNER ============ -->
+    <section class="section book" id="book">
+      <header class="section__head">
+        <p class="kicker mono">01 — Book the court</p>
+        <h2 class="section__title" data-split-words>Pick your hour. We'll keep the court warm.</h2>
+        <p class="section__lead">Tap a day and the hours you want to see your price. Then lock it in on the Yard. Your slot is held while you check out.</p>
+      </header>
+
+      <div class="planner">
+        <div class="planner__main">
+          <div class="planner__days" id="pDays" role="tablist" aria-label="Choose a day"></div>
+          <div class="planner__legend mono"><span><i class="lg lg--off"></i>Off-peak</span><span><i class="lg lg--pk"></i>Peak · from 5 PM</span><span class="muted">Pick back-to-back hours</span></div>
+          <div class="planner__hours" id="pHours"></div>
+        </div>
+        <aside class="planner__sum" aria-live="polite">
+          <p class="mono planner__label">Your session</p>
+          <p class="planner__day" id="pSumDay">Today</p>
+          <p class="planner__time" id="pSumTime">Pick a time</p>
+          <div class="planner__total"><span class="mono">₱</span><b id="pTotal">0</b></div>
+          <p class="planner__meta mono" id="pSumMeta">0 hours · standard court rate</p>
+          <a class="btn btn--primary btn--book planner__cta" id="pCta" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti data-book>
+            <span class="btn__label">Reserve on the Yard</span><span class="btn__icon">↗</span>
+          </a>
+          <ul class="planner__perks">
+            <li>Live availability at checkout</li>
+            <li>Pay by GCash, cash or hour credits</li>
+            <li>Free member account needed to book</li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="rates">
+        <div class="rate"><p class="mono">Weekday · off-peak</p><b>₱140<small>/hr</small></b><span>Mon–Fri · 8 AM – 5 PM</span></div>
+        <div class="rate rate--pk"><p class="mono">Weekday · peak</p><b>₱190<small>/hr</small></b><span>Mon–Fri · 5 PM – 10 PM</span></div>
+        <div class="rate"><p class="mono">Weekend · off-peak</p><b>₱180<small>/hr</small></b><span>Sat–Sun · 8 AM – 5 PM</span></div>
+        <div class="rate rate--pk"><p class="mono">Weekend · peak</p><b>₱230<small>/hr</small></b><span>Sat–Sun · 5 PM – 10 PM</span></div>
+      </div>
+      <p class="rates__note mono">Standard rates from the Yard's booking system. Final price and availability are confirmed at checkout.</p>
+    </section>
+
     <!-- ============ ACTION BENTO ============ -->
     <section class="section actions" id="actions">
       <header class="section__head">
-        <p class="kicker mono">01 — Tap menu</p>
+        <p class="kicker mono">02 — Tap menu</p>
         <h2 class="section__title" data-split-words>Everything at the Yard, one tap deep.</h2>
       </header>
 
       <div class="bento">
-        <a class="card card--xl card--blue" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-card data-confetti>
+        <a class="card card--xl card--red" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-card data-confetti data-book>
           <div class="card__glow"></div>
           <div class="card__top">
-            <span class="chip mono"><span class="dot dot--live"></span> live</span>
+            <span class="chip mono"><span class="dot dot--live"></span> open today</span>
             <span class="card__arrow">↗</span>
           </div>
-          <div class="score" aria-hidden="true">
-            <div class="score__team"><span class="mono">TEAM ROSE</span><b data-flip="11">0</b></div>
-            <div class="score__vs mono">vs</div>
-            <div class="score__team"><span class="mono">TEAM JIM</span><b data-flip="9">0</b></div>
+          <div class="courtviz" aria-hidden="true">
+            <div class="courtviz__court"><i class="courtviz__net"></i><i class="courtviz__k1"></i><i class="courtviz__k2"></i><span class="courtviz__ball"></span></div>
+            <div class="courtviz__price"><small class="mono">from</small><b>₱140</b><small class="mono">per hour</small></div>
           </div>
           <div class="card__body">
-            <h3>Live Scoreboard</h3>
-            <p>Club scores, sessions and the fair player randomizer.</p>
+            <h3>Book the court</h3>
+            <p>Reserve on the Yard site. Real-time availability, GCash proof upload, member hour credits.</p>
           </div>
         </a>
 
-        <a class="card card--green" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-card>
+        <a class="card card--green" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-card data-book>
+          <div class="card__glow"></div>
+          <div class="card__top"><span class="chip mono">hour passes</span><span class="card__arrow">↗</span></div>
+          <div class="passes" aria-hidden="true">
+            <div><b>5h</b><span>₱850</span></div><div><b>7h</b><span>₱1,150</span></div><div class="is-best"><b>10h</b><span>₱1,500</span></div>
+          </div>
+          <div class="card__body"><h3>Play more, pay less</h3><p>Prepaid hours from ₱150/hr. Best on peak and weekend slots.</p></div>
+        </a>
+
+        <a class="card card--blue" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-card>
+          <div class="card__glow"></div>
+          <div class="card__top"><span class="chip mono"><span class="dot dot--live"></span> live</span><span class="card__arrow">↗</span></div>
+          <div class="score score--sm" aria-hidden="true">
+            <div class="score__team"><span class="mono">ROSE</span><b data-flip="11">0</b></div>
+            <div class="score__vs mono">vs</div>
+            <div class="score__team"><span class="mono">JIM</span><b data-flip="9">0</b></div>
+          </div>
+          <div class="card__body"><h3>Scoreboard</h3><p>Sessions &amp; fair randomizer.</p></div>
+        </a>
+
+        <a class="card card--lime" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-card>
           <div class="card__glow"></div>
           <div class="card__top"><span class="chip mono">monthly</span><span class="card__arrow">↗</span></div>
-          <div class="podium" aria-hidden="true">
+          <div class="podium podium--sm" aria-hidden="true">
             <i style="--h:62%"><em>2</em></i><i style="--h:92%"><em>1</em></i><i style="--h:44%"><em>3</em></i>
           </div>
-          <div class="card__body"><h3>Rankings</h3><p>See who's climbing this month.</p></div>
+          <div class="card__body"><h3>Rankings</h3><p>Who's climbing.</p></div>
         </a>
 
-        <a class="card card--red" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-card>
-          <div class="card__glow"></div>
-          <div class="card__top"><span class="chip mono">home</span><span class="card__arrow">↗</span></div>
-          <div class="rose" aria-hidden="true">
-            <svg viewBox="0 0 100 100"><path d="M50 18c14 0 24 10 24 22 0 15-12 24-24 24S26 55 26 40c0-12 10-22 24-22Z" /><path d="M50 30c7 0 12 5 12 11s-5 11-12 11-11-4-11-10 4-12 11-12Z" /><path d="M50 64v26M50 78c-8-2-14-8-16-14M50 74c8-2 14-7 16-13"/></svg>
-          </div>
-          <div class="card__body"><h3>The Pickle Yard</h3><p>Our home page &amp; everything Yard.</p></div>
-        </a>
-
-        <button class="card card--ink" type="button" id="saveContact" data-card>
+        <button class="card card--ink card--wide" type="button" id="saveContact" data-card>
           <div class="card__glow"></div>
           <div class="card__top"><span class="chip mono">.vcf</span><span class="card__arrow">↓</span></div>
           <div class="card__big mono" aria-hidden="true">+ CONTACT</div>
-          <div class="card__body"><h3>Save the Yard</h3><p>Add us to your contacts in one tap.</p></div>
+          <div class="card__body"><h3>Save the Yard</h3><p>Add us to your contacts so booking is one tap away next time.</p></div>
         </button>
 
-        <button class="card card--ink" type="button" id="shareBtn" data-card>
+        <button class="card card--ink card--wide" type="button" id="shareBtn" data-card>
           <div class="card__glow"></div>
           <div class="card__top"><span class="chip mono">invite</span><span class="card__arrow">⤴</span></div>
           <div class="share-orbit" aria-hidden="true"><i></i><i></i><i></i><b>RJ</b></div>
-          <div class="card__body"><h3>Bring a partner</h3><p>Doubles needs four. Send the link.</p></div>
+          <div class="card__body"><h3>Bring your crew</h3><p>Doubles needs four. Send them the link and split the hour.</p></div>
         </button>
+      </div>
+    </section>
+
+    <!-- ============ HOW BOOKING WORKS ============ -->
+    <section class="section yard" id="yard">
+      <div class="yard__pin">
+        <div class="yard__left">
+          <p class="kicker mono">03 — How booking works</p>
+          <h2 class="section__title">Pick.<br/>Pay.<br/><span class="grad">Play.</span></h2>
+          <div class="yard__progress"><i id="yardProgress"></i></div>
+          <a class="btn btn--primary btn--book yard__cta" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-magnetic data-book><span class="btn__label">Start booking</span><span class="btn__icon">↗</span></a>
+        </div>
+        <ol class="yard__steps">
+          <li class="step" data-step>
+            <span class="step__n mono">01</span>
+            <div><h3>Pick your hours</h3><p>Choose a date and one or more back-to-back hours. Your selection is held while you finish checkout.</p></div>
+          </li>
+          <li class="step" data-step>
+            <span class="step__n mono">02</span>
+            <div><h3>Sign in for free</h3><p>A free member account keeps your bookings, receipts and hour credits in one place.</p></div>
+          </li>
+          <li class="step" data-step>
+            <span class="step__n mono">03</span>
+            <div><h3>Pay your way</h3><p>Upload your GCash proof, pay cash at the yard, or use hour-pass credits for an instant booking.</p></div>
+          </li>
+          <li class="step" data-step>
+            <span class="step__n mono">04</span>
+            <div><h3>Play &amp; climb</h3><p>Show up and play. Scores land on the live board and stack into the monthly rankings.</p></div>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- ============ RALLY GAME ============ -->
     <section class="section rally" id="rally">
       <header class="section__head">
-        <p class="kicker mono">02 — Warm-up</p>
+        <p class="kicker mono">04 — While you wait</p>
         <h2 class="section__title" data-split-words>Keep it out of the kitchen.</h2>
         <p class="section__lead">Drag or move to steer the paddle. Every hit speeds things up. Your best rally stays on this phone.</p>
       </header>
@@ -200,39 +280,10 @@
       </div>
     </section>
 
-    <!-- ============ THE YARD (pinned steps) ============ -->
-    <section class="section yard" id="yard">
-      <div class="yard__pin">
-        <div class="yard__left">
-          <p class="kicker mono">03 — How the Yard runs</p>
-          <h2 class="section__title">Show up.<br/>Get mixed.<br/><span class="grad">Climb.</span></h2>
-          <div class="yard__progress"><i id="yardProgress"></i></div>
-        </div>
-        <ol class="yard__steps">
-          <li class="step" data-step>
-            <span class="step__n mono">01</span>
-            <div><h3>Check in for the session</h3><p>Every open play is a session on the scoreboard, so your games count from the first serve.</p></div>
-          </li>
-          <li class="step" data-step>
-            <span class="step__n mono">02</span>
-            <div><h3>Get fairly randomized</h3><p>The player randomizer mixes partners and courts so nobody sits out too long and every match is fair.</p></div>
-          </li>
-          <li class="step" data-step>
-            <span class="step__n mono">03</span>
-            <div><h3>Score it live</h3><p>Results land on the club scoreboard as you play. No clipboards, no arguments.</p></div>
-          </li>
-          <li class="step" data-step>
-            <span class="step__n mono">04</span>
-            <div><h3>Climb the monthly rankings</h3><p>Wins stack into the monthly leaderboard. New month, new race to the top.</p></div>
-          </li>
-        </ol>
-      </div>
-    </section>
-
     <!-- ============ LINGO FLIP CARDS ============ -->
     <section class="section lingo" id="lingo">
       <header class="section__head">
-        <p class="kicker mono">04 — Court lingo</p>
+        <p class="kicker mono">05 — Court lingo</p>
         <h2 class="section__title" data-split-words>Talk like a regular.</h2>
         <p class="section__lead">Tap a card to flip it.</p>
       </header>
@@ -267,11 +318,12 @@
     <!-- ============ OUTRO ============ -->
     <section class="outro" id="outro">
       <div class="outro__ring" aria-hidden="true"><span></span><span></span><span></span></div>
-      <p class="kicker mono">see you on court</p>
+      <p class="kicker mono">one court · Candoni, Negros Occidental</p>
       <h2 class="outro__title"><span>Rose</span><span>Jim's</span><span>Pickle&nbsp;Yard</span></h2>
-      <a class="btn btn--primary btn--lg" href="https://rosejims-pickle-yard-scoreboard.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti>
-        <span class="btn__label">Let's play</span><span class="btn__icon">↗</span>
+      <a class="btn btn--primary btn--lg btn--book" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-magnetic data-confetti data-book>
+        <span class="btn__label">Book your hour</span><span class="btn__icon">↗</span>
       </a>
+      <p class="outro__note mono">8 AM – 10 PM · GCash · Cash · Hour credits</p>
     </section>
   </main>
 
@@ -279,6 +331,11 @@
     <span>© <span id="year"></span> Rose Jim's Pickle Yard</span>
     <span>Tap · Play · Repeat</span>
   </footer>
+
+  <a class="bookbar" id="bookbar" href="https://rose-jims-pickle-yard-final.vercel.app/" target="_blank" rel="noopener" data-book>
+    <span class="bookbar__txt"><b>Book a court</b><small class="mono" id="bookbarSub">from ₱140/hr · 8 AM – 10 PM</small></span>
+    <span class="bookbar__go">↗</span>
+  </a>
 
   <div class="toast mono" id="toast" role="status" aria-live="polite"></div>
 

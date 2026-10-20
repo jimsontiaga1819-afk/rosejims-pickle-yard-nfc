@@ -60,8 +60,9 @@
     const vcf = [
       "BEGIN:VCARD", "VERSION:3.0",
       "N:;Rose Jim's Pickle Yard;;;", "FN:Rose Jim's Pickle Yard", "ORG:Rose Jim's Pickle Yard",
+      "ADR;TYPE=WORK:;;;Candoni;Negros Occidental;;Philippines",
       `URL;TYPE=Home:${HOME}`, `URL;TYPE=Scoreboard:${SCOREBOARD}`, `URL;TYPE=Tap:${location.href.split("#")[0]}`,
-      "NOTE:Pickleball club — live scoreboard\\, fair randomizer\\, sessions & monthly rankings.",
+      "NOTE:Book the court: https://rose-jims-pickle-yard-final.vercel.app/ — 8 AM to 10 PM\\, from ₱140/hr. Pay by GCash or cash.",
       "END:VCARD",
     ].join("\r\n");
     const blob = new Blob([vcf], { type: "text/vcard" });
@@ -75,7 +76,7 @@
 
   /* ---------- share ---------- */
   $("#shareBtn").addEventListener("click", async (e) => {
-    const data = { title: "Rose Jim's Pickle Yard", text: "Need a fourth for doubles. Tap in:", url: location.href.split("#")[0] };
+    const data = { title: "Rose Jim's Pickle Yard", text: "Let's book a court at Rose Jim's Pickle Yard. Need a fourth for doubles:", url: location.href.split("#")[0] };
     buzz(15);
     try {
       if (navigator.share) { await navigator.share(data); return; }
@@ -185,6 +186,69 @@
   $$("[data-split-words]").forEach((el) => {
     el.innerHTML = el.textContent.trim().split(/\s+/).map((w) => `<span class="w"><span>${w}</span></span>`).join(" ");
   });
+
+  /* ================= BOOKING PLANNER (booking-first) ================= */
+  (function planner() {
+    const daysEl = $("#pDays"), hoursEl = $("#pHours");
+    if (!daysEl) return;
+    // Standard court rates from the Yard's booking system (₱/hr). Peak starts 5 PM. Bookable 8 AM – 10 PM.
+    const RATES = { wdOff: 140, wdPk: 190, weOff: 180, wePk: 230 }, OPEN = 8, CLOSE = 22, PEAK = 17;
+    const fmt = (n) => n.toLocaleString("en-PH");
+    const hLabel = (h) => { const a = h % 24, hh = a % 12 || 12; return hh + (a < 12 ? " AM" : " PM"); };
+    const nowMNL = () => { const p = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hour12: false }).formatToParts(new Date()); const g = (t) => +p.find((x) => x.type === t).value; return { y: g("year"), m: g("month"), d: g("day"), h: g("hour") % 24 }; };
+    const n = nowMNL();
+    const base = new Date(Date.UTC(n.y, n.m - 1, n.d));
+    const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(base); d.setUTCDate(d.getUTCDate() + i); const wd = d.getUTCDay(); return { d, i, we: wd === 0 || wd === 6 }; });
+    let day = days[0], sel = [];
+    if (n.h >= CLOSE - 1) day = days[1];
+    const rate = (h) => (day.we ? (h >= PEAK ? RATES.wePk : RATES.weOff) : (h >= PEAK ? RATES.wdPk : RATES.wdOff));
+    const wdName = (d) => d.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
+    const longName = (d, i) => (i === 0 ? "Today" : i === 1 ? "Tomorrow" : d.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })) + ", " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+
+    daysEl.innerHTML = days.map((x) => `<button class="day ${x.we ? "is-we" : ""}" role="tab" data-i="${x.i}" aria-selected="false"><small>${x.i === 0 ? "Today" : wdName(x.d)}</small><b>${x.d.getUTCDate()}</b></button>`).join("");
+    daysEl.addEventListener("click", (e) => { const b = e.target.closest(".day"); if (!b) return; day = days[+b.dataset.i]; sel = []; buzz(8); render(true); });
+    hoursEl.addEventListener("click", (e) => {
+      const b = e.target.closest(".hour"); if (!b) return; const h = +b.dataset.h;
+      if (sel.includes(h)) { sel = h === sel[0] || h === sel[sel.length - 1] ? sel.filter((x) => x !== h) : sel.filter((x) => x < h); }
+      else if (!sel.length || h === sel[0] - 1 || h === sel[sel.length - 1] + 1) sel = [...sel, h].sort((a, b) => a - b);
+      else { sel = [h]; toast("Pick back-to-back hours. Started a new selection."); }
+      buzz(10); render();
+    });
+
+    let shown = 0;
+    function render(rebuild) {
+      $$(".day", daysEl).forEach((b) => b.setAttribute("aria-selected", String(+b.dataset.i === day.i)));
+      if (rebuild || !hoursEl.children.length) {
+        const hrs = []; for (let h = OPEN; h < CLOSE; h++) hrs.push(h);
+        hoursEl.innerHTML = hrs.map((h) => { const past = day.i === 0 && h <= n.h; return `<button class="hour ${h >= PEAK ? "is-pk" : ""} ${past ? "is-past" : ""}" data-h="${h}" ${past ? "disabled" : ""}><b>${hLabel(h)}</b><small>₱${rate(h)}</small></button>`; }).join("");
+        if (hasGSAP && !reduce) gsap.from(hoursEl.children, { y: 12, opacity: 0, duration: 0.5, stagger: 0.02, ease: "power3.out" });
+      }
+      $$(".hour", hoursEl).forEach((b) => b.classList.toggle("is-on", sel.includes(+b.dataset.h)));
+      const total = sel.reduce((s, h) => s + rate(h), 0);
+      $("#pSumDay").textContent = longName(day.d, day.i);
+      $("#pSumTime").textContent = sel.length ? `${hLabel(sel[0])} – ${hLabel(sel[sel.length - 1] + 1)}` : "Pick a time";
+      $("#pSumMeta").textContent = `${sel.length} hour${sel.length === 1 ? "" : "s"} · ${day.we ? "weekend" : "weekday"} rate${sel.some((h) => h >= PEAK) ? " · incl. peak" : ""}`;
+      $("#pCta").classList.toggle("is-ready", sel.length > 0);
+      $("#pCta .btn__label").textContent = sel.length ? `Reserve ${sel.length}h on the Yard` : "Reserve on the Yard";
+      const sub = $("#bookbarSub"); if (sub) sub.textContent = sel.length ? `${longName(day.d, day.i).split(",")[0]} · ${hLabel(sel[0])} · ₱${fmt(total)}` : "from ₱140/hr · 8 AM – 10 PM";
+      const el = $("#pTotal");
+      if (hasGSAP && !reduce) { const o = { v: shown }; gsap.to(o, { v: total, duration: 0.6, ease: "power3.out", onUpdate: () => (el.textContent = fmt(Math.round(o.v))) }); }
+      else el.textContent = fmt(total);
+      shown = total;
+      try { sessionStorage.setItem("rj_plan", JSON.stringify({ d: day.d.toISOString().slice(0, 10), h: sel })); } catch {}
+    }
+    render(true);
+  })();
+
+  /* ---------- sticky booking bar ---------- */
+  (function bookbar() {
+    const bar = $("#bookbar"); if (!bar) return;
+    const targets = [$("#hero"), $(".planner__sum"), $("#outro")].filter(Boolean);
+    const vis = new Map(targets.map((t) => [t, t.id === "hero"]));
+    const update = () => bar.classList.toggle("is-on", ![...vis.values()].some(Boolean));
+    const io = new IntersectionObserver((es) => { es.forEach((e) => vis.set(e.target, e.isIntersecting)); update(); }, { threshold: 0.15 });
+    targets.forEach((t) => io.observe(t));
+  })();
 
   /* ================= RALLY GAME ================= */
   (function rally() {
@@ -369,6 +433,10 @@
     $$("[data-split-words]").forEach((el) => gsap.from(el.querySelectorAll(".w > span"), { yPercent: 110, duration: 1.1, stagger: 0.06, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 85%" } }));
     $$(".kicker, .section__lead").forEach((el) => gsap.from(el, { y: 20, opacity: 0, duration: 1, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 90%" } }));
 
+    // planner + rates
+    gsap.from(".planner > *", { y: 60, opacity: 0, duration: 1.1, stagger: 0.1, ease: "expo.out", scrollTrigger: { trigger: ".planner", start: "top 85%" } });
+    gsap.from(".rate", { y: 40, opacity: 0, duration: 0.9, stagger: 0.07, ease: "expo.out", scrollTrigger: { trigger: ".rates", start: "top 90%" } });
+
     // bento cards
     gsap.from("[data-card]", { y: 80, opacity: 0, rotateX: -15, duration: 1.2, stagger: 0.08, ease: "expo.out", scrollTrigger: { trigger: ".bento", start: "top 80%" } });
 
@@ -386,7 +454,6 @@
 
     // podium grow + rose draw
     gsap.from(".podium i", { scaleY: 0, duration: 1.2, stagger: 0.12, ease: "elastic.out(1, 0.6)", scrollTrigger: { trigger: ".podium", start: "top 90%" } });
-    ScrollTrigger.create({ trigger: ".rose", start: "top 85%", once: true, onEnter: () => $(".rose").classList.add("is-drawn") });
 
     // game entrance
     gsap.from(".game", { y: 100, scale: 0.92, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: ".game", start: "top 85%" } });
